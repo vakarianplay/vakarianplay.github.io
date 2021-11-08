@@ -1,6 +1,6 @@
 @import url("http://fonts.googleapis.com/css?family=Roboto:300,500&subset=latin,cyrillic");
 /*@import url(http://fonts.googleapis.com/css?family=Roboto:400,500,100,300,700,900&subset=latin,cyrillic);*/
-@import url("font-awesome.min.css");
+@import url("fontawesome.css");
 
 /*
 	Aerial by HTML5 UP
@@ -175,7 +175,7 @@
 	#bg {
 	/* Set your background with this */
 
-  /*background: #348cb2 url("images/untitled.png") bottom left;*/
+  /*background: #348cb2 url("images/untitled.jpg") bottom left;*/
 		background: #2A2D2C;
   background-position: center center;
 		background-repeat: repeat-x;
@@ -236,7 +236,7 @@
 		-ms-animation: overlay 1.5s 0.5s forwards;
 		animation: overlay 1.5s 0.5s forwards;
 		background-attachment: fixed, fixed;
-		/*background-image: url("images/overlay-pattern.png"), url("images/overlay.svg");*/
+		/*background-image: url("images/overlay-pattern.jpg"), url("images/overlay.svg");*/
 		background-position: top left, center center;
 		background-repeat: repeat, no-repeat;
 		background-size: auto, cover;
@@ -593,7 +593,7 @@
 				#header nav a span {
 					display: none;
 				}
-				
+
 #header cre li {
 				-moz-animation: nav-icons 0.5s ease-in-out forwards;
 				-webkit-animation: nav-icons 0.5s ease-in-out forwards;
@@ -611,8 +611,8 @@
 				opacity: 0;
 				position: relative;
 				top: 0;
-				 
-			} 
+
+			}
 
 				#header cre li:nth-child(1) {
 					-moz-animation-delay: 2.75s;
@@ -635,7 +635,7 @@
 					animation-delay: 3.25s;
 				}
 
-				
+
 /* Footer */
 
 	#footer {
@@ -671,7 +671,7 @@
 			}
 
    #bg {
-    background-image: url("images/untitled.png");
+    background-image: url("images/untitled.jpg");
    }
 
  }
@@ -687,7 +687,7 @@
 			}
 
    #bg {
-    background-image: url("images/untitled.png");
+    background-image: url("images/untitled.jpg");
    }
  }
 
@@ -697,7 +697,7 @@
 
 
    #bg {
-    background-image: url("images/untitled.png");
+    background-image: url("images/untitled.jpg");
    }
 		/* Basic */
 
@@ -742,7 +742,7 @@
 
 
    #bg {
-    background-image: url("images/untitled.png");
+    background-image: url("images/untitled.jpg");
    }
 
 	/* Header */
@@ -758,6 +758,29 @@
 	/*	border-radius: 8px; */
 }
 
+mus
+ {
+
+	 -moz-transition: all 0.2s ease-in-out;
+		-webkit-transition: all 0.2s ease-in-out;
+		-ms-transition: all 0.2s ease-in-out;
+		transition: all 0.2s ease-in-out;
+		border-radius: 100%;
+		border: solid 1px #fff;
+		display: block;
+		font-size: 1.75em;
+		height: 2.5em;
+		line-height: 2.5em;
+		position: relative;
+		text-align: center;
+		top: 0;
+		width: 2.5em;
 
 
-				
+ }
+
+mus:hover
+ {
+	 font-size: 2em;
+
+ }
