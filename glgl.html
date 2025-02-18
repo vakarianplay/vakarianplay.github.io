@@ -1,1 +1,84 @@
-...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Долг Google</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        p {
+            font-size: 1.5rem;
+        }
+        .value {
+            font-weight: bold;
+            color: #d9534f; /* Красный цвет для выделения числа */
+            word-break: break-word; /* Позволяет переносить длинные числа */
+        }
+        footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <h1>Долг Google перед российскими телеканалами</h1>
+    <p>Долг Google перед российскими телеканалами на момент</p>
+    <p id="currentDebt">Загрузка...</p>
+
+    <footer>Эта информация предоставлена в целях демонстрации</footer>
+
+    <script>
+        // Исходные данные
+        const A_initial = Math.pow(2.8, 10) * 39;  // Начальное значение A
+        const exp = Math.pow(10, 5) * 17;         // Увеличение A каждые сутки
+        const startDate = new Date('2025-02-18T00:00:00'); // Начальная дата
+
+        // Функция вычисления текущего значения A
+        function calculateCurrentA() {
+            const now = new Date(); // Текущее время
+            const timeDifference = now - startDate; // Разница в миллисекундах
+            const daysPassed = timeDifference / (1000 * 60 * 60 * 24); // Перевод в дни
+            const currentA = A_initial + daysPassed * exp; // Вычисление A
+            return currentA;
+        }
+
+        // Функция для получения текущей даты и времени в читаемом формате
+        function getCurrentDateTime() {
+            const now = new Date();
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+            };
+            return now.toLocaleDateString('ru-RU', options); // Локализованная дата и время
+        }
+
+        // Функция для обновления отображаемого текста
+        function updateDebtText() {
+            const currentA = calculateCurrentA(); // Вычисляем текущее значение A
+            const currentDateTime = getCurrentDateTime(); // Получаем текущую дату и время
+            const debtText = `${currentDateTime} достиг <span class="value">${currentA.toFixed(2)} * 10^30 </span>  рублей`; // Текст с вставленными данными
+            document.getElementById('currentDebt').innerHTML = debtText; // Обновляем текст на странице
+        }
+
+        // Обновляем текст каждую секунду
+        setInterval(updateDebtText, 1000);
+
+        // При загрузке страницы сразу обновляем текст
+        updateDebtText();
+    </script>
+</body>
+</html>
