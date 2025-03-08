@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Рикролл!</title>
+<style>
+body {
+  margin: 0;
+  overflow: hidden; /* Скрываем полосы прокрутки */
+}
+
+video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover; /* Заполняем экран видео */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999; /* Помещаем видео поверх всего */
+}
+</style>
+</head>
+<body>
+
+<video id="rickrollVideo" autoplay muted loop playsinline>
+  <source src="https://vakarian.website/assets/rick.mp4" type="video/mp4">
+  Ваш браузер не поддерживает видео HTML5.
+</video>
+
+<script>
+  // Функция для запуска в полноэкранном режиме
+  function fullScreen() {
+    const video = document.getElementById("rickrollVideo");
+
+    if (video.requestFullscreen) {
+      video.requestFullscreen();
+    } else if (video.mozRequestFullScreen) { /* Firefox */
+      video.mozRequestFullScreen();
+    } else if (video.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+      video.webkitRequestFullscreen();
+    } else if (video.msRequestFullscreen) { /* IE/Edge */
+      video.msRequestFullscreen();
+    }
+  }
+
+  // Запускаем полноэкранный режим сразу после загрузки страницы
+  window.onload = function() {
+    fullScreen();
+  };
+
+  // Альтернативный вариант запуска полноэкранного режима (если onload не сработает моментально)
+  // Можно раскомментировать, но может привести к проблемам с блокировкой автовоспроизведения в некоторых браузерах
+  // setTimeout(fullScreen, 500);
+</script>
+
+</body>
+</html>
