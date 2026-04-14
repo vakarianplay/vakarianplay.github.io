@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RETROCHILL Radio</title>
+    <style>
+        :root {
+            --bg-top: #120a2e;
+            --bg-bottom: #05030f;
+            --pink: #ff3c9e;
+            --cyan: #00eaff;
+            --violet: #8f3dff;
+            --text: #f6efff;
+            --muted: #b8a8d9;
+            --cassette: #1d1f2a;
+            --cassette-2: #262938;
+            --label: #f8f3ff;
+            --ink: #1f1830;
+            --window: #0f111a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            overscroll-behavior: none;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 50% 8%, rgba(255, 60, 158, 0.24),
+                    transparent 35%),
+                linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
+        }
+
+        .grid {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.18;
+            background:
+                linear-gradient(to right, rgba(0, 234, 255, 0.18) 1px,
+                    transparent 1px),
+                linear-gradient(to bottom, rgba(0, 234, 255, 0.18) 1px,
+                    transparent 1px);
+            background-size: 42px 42px;
+            transform: perspective(520px) rotateX(66deg) translateY(30%);
+            transform-origin: center bottom;
+            z-index: 0;
+        }
+
+        .vhs-noise,
+        .vhs-scanlines {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .vhs-noise {
+            opacity: 0.08;
+            mix-blend-mode: screen;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.2) 0.6px,
+                    transparent 0.8px);
+            background-size: 3px 3px;
+        }
+
+        .vhs-scanlines {
+            opacity: 0.1;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0) 0px,
+                rgba(0, 0, 0, 0) 2px,
+                rgba(0, 0, 0, 0.2) 3px,
+                rgba(0, 0, 0, 0.2) 4px
+            );
+            mix-blend-mode: multiply;
+        }
+
+        .app {
+            position: relative;
+            z-index: 1;
+            width: 100vw;
+            height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 16px;
+            overflow: hidden;
+        }
+
+        .wrap {
+            width: min(920px, 96vw);
+            max-height: calc(100vh - 32px);
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: clamp(28px, 5vw, 56px);
+            letter-spacing: 2px;
+            color: #ffe6ff;
+            text-shadow:
+                0 0 10px rgba(255, 60, 158, 0.8),
+                0 0 24px rgba(143, 61, 255, 0.75);
+        }
+
+        .brand p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            letter-spacing: 0.22em;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .cassette {
+            position: relative;
+            border-radius: 20px;
+            padding: 18px;
+            background: linear-gradient(180deg, var(--cassette-2), var(--cassette));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow:
+                0 22px 45px rgba(0, 0, 0, 0.55),
+                0 0 0 2px rgba(255, 255, 255, 0.05) inset,
+                0 0 30px rgba(143, 61, 255, 0.35);
+        }
+
+        .screw {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #69718a;
+            position: absolute;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6) inset;
+        }
+
+        .s1 { top: 12px; left: 12px; }
+        .s2 { top: 12px; right: 12px; }
+        .s3 { bottom: 12px; left: 12px; }
+        .s4 { bottom: 12px; right: 12px; }
+
+        .label {
+            border-radius: 12px;
+            background:
+                linear-gradient(90deg, #fdf8ff 0 58%, #f5edff 58% 100%);
+            color: var(--ink);
+            padding: 12px 14px 10px;
+            overflow: hidden;
+        }
+
+        .stripe {
+            height: 10px;
+            border-radius: 8px;
+            background: linear-gradient(90deg, var(--pink), var(--violet), var(--cyan));
+            margin-bottom: 10px;
+        }
+
+        .label-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: baseline;
+            margin-bottom: 8px;
+        }
+
+        .label-top .name {
+            font-size: clamp(18px, 2.8vw, 28px);
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .label-top .fmt {
+            font-size: 12px;
+            color: #5f547e;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .track-label {
+            margin: 6px 0 4px;
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #64587f;
+        }
+
+        .track {
+            min-height: 3em;
+            margin: 0;
+            font-size: clamp(16px, 2.2vw, 24px);
+            line-height: 1.35;
+            font-weight: 700;
+            color: #2a1f40;
+            word-break: break-word;
+        }
+
+        .window {
+            margin-top: 12px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #151827, var(--window));
+            padding: 12px;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.08) inset,
+                0 0 14px rgba(0, 234, 255, 0.18);
+        }
+
+        .reels {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            place-items: center;
+        }
+
+        .reel {
+            width: min(24vw, 108px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background:
+                radial-gradient(circle at center, #9aa1b8 0 12px, transparent 12px),
+                radial-gradient(circle at center, #3b4258 0 28%, #2a3042 29% 100%);
+            border: 5px solid #6f7894;
+            position: relative;
+            box-shadow:
+                0 0 0 2px rgba(0, 0, 0, 0.45) inset,
+                0 0 8px rgba(0, 234, 255, 0.22);
+        }
+
+        .reel::before,
+        .reel::after {
+            content: "";
+            position: absolute;
+            inset: 10%;
+            border-radius: 50%;
+            border: 2px dashed rgba(220, 230, 255, 0.55);
+        }
+
+        .reel::after {
+            inset: 30%;
+            border-style: solid;
+            border-color: rgba(220, 230, 255, 0.65);
+        }
+
+        .deck {
+            margin-top: 12px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .player {
+            width: 100%;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.09) inset,
+                0 0 18px rgba(0, 234, 255, 0.18);
+        }
+
+        .status {
+            text-align: center;
+            margin: 0;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .status.ok {
+            color: #b9ffe1;
+        }
+
+        .status.bad {
+            color: #ff9dbf;
+        }
+
+        @media (max-width: 640px) {
+            .app {
+                padding: 10px;
+            }
+
+            .cassette {
+                padding: 14px;
+            }
+
+            .reels {
+                gap: 14px;
+            }
+
+            .reel {
+                width: min(28vw, 90px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid" aria-hidden="true"></div>
+
+    <main class="app">
+        <div class="wrap">
+            <header class="brand">
+                <h1>RETROCHILL</h1>
+                <p>Synthwave • Retrowave • Night Drive</p>
+            </header>
+
+            <section class="cassette" aria-label="RETROCHILL cassette player">
+                <span class="screw s1" aria-hidden="true"></span>
+                <span class="screw s2" aria-hidden="true"></span>
+                <span class="screw s3" aria-hidden="true"></span>
+                <span class="screw s4" aria-hidden="true"></span>
+
+                <div class="label">
+                    <div class="stripe"></div>
+
+                    <div class="label-top">
+                        <div class="name">RETROCHILL</div>
+                        <div class="fmt">MPGA 256 kb/s</div>
+                    </div>
+
+                    <p class="track-label">Сейчас играет</p>
+                    <p id="track" class="track">Загрузка…</p>
+                </div>
+
+                <div class="window">
+                    <div class="reels" aria-hidden="true">
+                        <div class="reel"></div>
+                        <div class="reel"></div>
+                    </div>
+                </div>
+
+                <div class="deck">
+                    <audio class="player" controls preload="none">
+                        <source
+                            src="http://radio.vakarian.website:8000"
+                            type="audio/mpeg"
+                        />
+                        Ваш браузер не поддерживает HTML5 audio.
+                    </audio>
+                    <p id="status" class="status">
+                        Обновление трека каждые 5 секунд
+                    </p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="vhs-noise" aria-hidden="true"></div>
+    <div class="vhs-scanlines" aria-hidden="true"></div>
+
+    <script>
+        const TRACK_URL = "http://radio.vakarian.website:8001/trackid";
+        const trackEl = document.getElementById("track");
+        const statusEl = document.getElementById("status");
+
+        async function updateTrack() {
+            try {
+                const res = await fetch(`${TRACK_URL}?_=${Date.now()}`, {
+                    cache: "no-store"
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP ${res.status}`);
+                }
+
+                const text = (await res.text()).trim();
+                trackEl.textContent = text || "Nothing is playing";
+                statusEl.textContent = "Связь с сервером: OK";
+                statusEl.className = "status ok";
+            } catch (err) {
+                trackEl.textContent = "Ошибка получения трека";
+                statusEl.textContent = `Ошибка обновления: ${err.message}`;
+                statusEl.className = "status bad";
+            }
+        }
+
+        updateTrack();
+        setInterval(updateTrack, 5000);
+    </script>
+</body>
+</html>
