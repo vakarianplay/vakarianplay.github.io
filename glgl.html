@@ -44,9 +44,9 @@
         const exp = Math.pow(10, 5) * 17;         // Увеличение A каждые сутки
         const startDate = new Date('2025-02-18T00:00:00'); // Начальная дата
 
-        // Функция вычисления текущего значения A
+
         function calculateCurrentA() {
-            const now = new Date(); // Текущее время
+            const now = new Date(); 
             const timeDifference = now - startDate; // Разница в миллисекундах
             const daysPassed = timeDifference / (1000 * 60 * 60 * 24); // Перевод в дни
             const currentA = A_initial + daysPassed * exp; // Вычисление A
